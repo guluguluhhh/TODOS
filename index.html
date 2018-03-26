@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Template • TodoMVC</title>
+		<link rel="stylesheet" href="css/base.css">
+		<link rel="stylesheet" href="css/index.css">
+		<!-- CSS overrides - remove if you don't need it -->
+		<link rel="stylesheet" href="css/app.css">
+	</head>
+
+	<body ng-app='TodoS'>
+		<section class="todoapp" ng-controller='TodosCtrl'>
+			<header class="header">
+				<h1>todos</h1>
+				<form ng-submit='add()'>
+					<input class="new-todo" ng-model='txt' placeholder="What needs to be done?" autofocus >
+				</form>
+			</header>
+			<section class="main">
+				<input class="toggle-all" type="checkbox">
+				<label for="toggle-all">Mark all as complete</label>
+				<ul class="todo-list">
+					<li ng-repeat='(key,todo) in todos'>
+						<div class="view">
+							<input class="toggle" type="checkbox" ng-checked='todo.flag' ng-click='done(key)'>
+							<label ng-bind='todo.text'></label>
+							<button class="destroy" ng-click='destory(todos,key)'></button>
+						</div>
+						<input class="edit" value="Create a TodoMVC template">
+					</li>
+					<h5>下面已完成</h5>
+					<li ng-repeat='(key,done) in dones' class="completed">
+						<div class="view">
+							<input class="toggle" type="checkbox" ng-checked='done.flag' ng-click='back(key)'>
+							<label ng-bind='done.text'></label>
+							<button class="destroy" ng-click='destory(dones,key)'></button>
+						</div>
+						<input class="edit" value="Rule the web">
+					</li>
+				</ul>
+			</section>
+			<footer class="footer">
+				<span class="todo-count"><strong>{{todos.length}}</strong> item left</span>
+				<button class="clear-completed">Clear completed</button>
+			</footer>
+		</section>
+		<footer class="info">
+			<p>Double-click to edit a todo</p>
+			<p>Template by
+				<a href="http://sindresorhus.com">Sindre Sorhus</a>
+			</p>
+			<p>Created by
+				<a href="http://todomvc.com">you</a>
+			</p>
+			<p>Part of
+				<a href="http://todomvc.com">TodoMVC</a>
+			</p>
+		</footer>
+
+	</body>
+	<script src="js/angular.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var TodoS = angular.module('TodoS', []);
+		TodoS.controller('TodosCtrl', ['$scope', function($scope) {
+//			$scope.todos = [{
+//					text: '吃饭',
+//					flag: true
+//				},
+//				{
+//					text: '睡觉',
+//					flag: false
+//				}
+//			];
+			//待办事项
+			$scope.todos=[];
+			$scope.add=function(){
+//				alert($scope.txt);
+				$scope.todos.push({text:$scope.txt,flag:false});
+				$scope.txt='';
+			}
+			//已完成事项
+			$scope.dones=[];
+			$scope.done=function(key){
+//				alert(11);
+//				alert(key)
+				var todone=$scope.todos.splice(key,1)[0];
+//				console.log(todone);
+				todone.flag=true;
+				$scope.dones.push(todone);
+			}
+			$scope.back=function(key){
+				var toback=$scope.dones.splice(key,1)[0];
+				toback.flag=false;
+				$scope.todos.push(toback);
+			}
+			$scope.destory=function(todos,key){
+//				alert(1)
+//				alert(key)
+				todos.splice(key,1);
+			}
+		}])
+	</script>
+
+</html>
